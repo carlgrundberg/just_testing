@@ -8,55 +8,120 @@
     <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.14.custom.css" rel="Stylesheet"/>
     <style type="text/css">
         body {
-            font:  normal 12px Georgia;
+            font: normal 12px Georgia;
+            color: #333;
         }
-        
+
         #content {
             position: relative;
         }
 
-        #index {
-            position: absolute;
-            width: 468px;
+        #pages {
+            float: left;
             left: 20px;
-            top: 0;
+            margin-right: 50px;
+        }
+
+        .page {
+            width: 468px;
         }
 
         #items {
-            position: absolute;
-            width: 200px;
-            left: 508px;
-            top: 0;
+            float: left;
+            width: 400px;
         }
 
-        #sortable { list-style-type: none; margin: 0; padding: 0; }
-        #sortable li { margin: 3px; padding: 0.4em; font-size: 1.4em; }
+        #items ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #items ul li {
+            margin: 3px;
+            padding: 0.4em;
+            font-size: 1.4em;
+        }
+
+        .item {
+            display: block;
+            color: #333;
+            text-decoration: none;
+        }
+
+        #index .item h1 {
+            font: bold 2em Arial;
+            margin: 0;
+        }
+
+        #index .item p {
+            margin: 0;
+        }
+
+        #items .item {
+            margin: 1em 0;
+        }
+
+        #index .ui-draggable:hover, #index .ui-draggable-dragging {
+            margin: -2px;
+            border: 2px dashed #333;
+        }
+
     </style>
+    <script>
+        $(function() {
+            $(".item").draggable({revert: 'invalid'});
+            $("#items").accordion({header: 'a h1'});
+            $("#pages").tabs();
+        });
+    </script>
 </head>
 <body>
 <h1>Frontpage editor</h1>
 
 <div id="content">
-    <div id="index" class="ui-widget">
-        <div class="ui-widget-header">Frontpage</div>
+    <div id="pages">
+        <ul>
+            <li><a href="#index">Frontpage</a></li>
+            <li><a href="#page2">Another page</a></li>
+            <li><a href="#page3">Third page</a></li>
+        </ul>
+        <div id="index" class="page">
 
-        <a href="#" class="item">
-            <h1>Testing item 1</h1>
-            Summary for the first testing item.
-        </a>
+            <a href="#" class="item">
+                <h1>Testing item 1</h1>
 
+                <p>Summary for the first testing item.</p>
+            </a>
+
+        </div>
+        <div id="page2" class="page">
+
+        </div>
+        <div id="page3" class="page">
+
+        </div>
     </div>
+
     <div id="items" class="ui-widget">
         <div class="ui-widget-header">Available items</div>
-        <div class="ui-widget-content">
-            <ul id="sortable">
-                <li class="ui-state-default">Testing item 1</li>
-                <li class="ui-state-default">Testing item 2</li>
-                <li class="ui-state-default">Testing item 3</li>
-                <li class="ui-state-default">Testing item 4</li>
-                <li class="ui-state-default">Testing item 5</li>
-            </ul>
-        </div>
+
+        <a href="#" class="item">
+            <h1>Testing item 2</h1>
+
+            <p>Summary for the second testing item.</p>
+        </a>
+        <a href="#" class="item">
+            <h1>Testing item 3</h1>
+
+            <p>Summary for the third testing item.</p>
+        </a>
+        <a href="#" class="item">
+            <h1>Testing item 4</h1>
+
+            <p>Summary for the fourth testing item.</p>
+        </a>
+
     </div>
 </div>
 </body>
