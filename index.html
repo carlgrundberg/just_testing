@@ -1,11 +1,63 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>Testpage</title>
+    <title>Frontpage editor</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
+    <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.14.custom.css" rel="Stylesheet"/>
+    <style type="text/css">
+        body {
+            font:  normal 12px Georgia;
+        }
+        
+        #content {
+            position: relative;
+        }
+
+        #index {
+            position: absolute;
+            width: 468px;
+            left: 20px;
+            top: 0;
+        }
+
+        #items {
+            position: absolute;
+            width: 200px;
+            left: 508px;
+            top: 0;
+        }
+
+        #sortable { list-style-type: none; margin: 0; padding: 0; }
+        #sortable li { margin: 3px; padding: 0.4em; font-size: 1.4em; }
+    </style>
 </head>
 <body>
-    <h1>Testing</h1>
-    <p>From PhpStorm again!</p>
-    <h2>Works?</h2>
+<h1>Frontpage editor</h1>
+
+<div id="content">
+    <div id="index" class="ui-widget">
+        <div class="ui-widget-header">Frontpage</div>
+
+        <a href="#" class="item">
+            <h1>Testing item 1</h1>
+            Summary for the first testing item.
+        </a>
+
+    </div>
+    <div id="items" class="ui-widget">
+        <div class="ui-widget-header">Available items</div>
+        <div class="ui-widget-content">
+            <ul id="sortable">
+                <li class="ui-state-default">Testing item 1</li>
+                <li class="ui-state-default">Testing item 2</li>
+                <li class="ui-state-default">Testing item 3</li>
+                <li class="ui-state-default">Testing item 4</li>
+                <li class="ui-state-default">Testing item 5</li>
+            </ul>
+        </div>
+    </div>
+</div>
 </body>
 </html>
