@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <title>Frontpage editor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script type="text/javascript"
             src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
@@ -18,7 +19,6 @@
 
         #pages {
             float: left;
-            left: 20px;
             margin-right: 50px;
         }
 
@@ -31,68 +31,114 @@
             width: 400px;
         }
 
-        #items ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        #items ul li {
-            margin: 3px;
-            padding: 0.4em;
-            font-size: 1.4em;
-        }
-
         .item {
             display: block;
             color: #333;
             text-decoration: none;
+            margin: 1em 0;
+            background: white;
         }
 
-        #index .item h1 {
+        .item p {
+            margin: 0;
+        }
+
+        .page .item {
+            padding-bottom: 1em;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .page .item h1 {
             font: bold 2em Arial;
             margin: 0;
         }
 
-        #index .item p {
-            margin: 0;
+        .page .item .dateline {
+            color: #069;
+            font-weight: bold;
+        }
+
+        .page .item .category {
+            display: none;
         }
 
         #items .item {
-            margin: 1em 0;
+            padding:  0.4em;
         }
 
-        #index .ui-draggable:hover, #index .ui-draggable-dragging {
-            margin: -2px;
+        #items .item h1 {
+            font:  bold 1.2em Arial;
+            margin: 0;
+        }
+
+        #items .item .summary, #items .item img {
+            display: none;
+        }
+
+        #items .item .category {
+            float: left;
+            margin-right: 10px;
+        }
+
+        .page .item:hover {
+            margin: -2px -2px -1px;
             border: 2px dashed #333;
         }
 
+        #items .item:hover {
+            margin: -2px;
+            border: 2px dashed #333;
+        }
     </style>
     <script>
         $(function() {
-            $(".item").draggable({revert: 'invalid'});
-            $("#items").accordion({header: 'a h1'});
-            $("#pages").tabs();
+            $("#pages, #items").tabs();
+
+            $(".page").sortable({
+                connectWith: '#items .items',
+                forcePlaceholderSize: true,
+                placeholder: 'ui-state-highlight',
+                helper: 'clone'
+            });
+            $("#items .items").sortable({
+                forcePlaceholderSize: true,
+                placeholder: 'ui-state-highlight',
+                connectWith: '.page'
+            });
+
+            /*$('#items h1').click(function(e) {
+                if ($(this.parentNode).hasClass('ui-draggable-dragging')) {
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            });
+            $("#items").accordion({header: 'a h1'});*/
         });
     </script>
 </head>
 <body>
-<h1>Frontpage editor</h1>
-
 <div id="content">
     <div id="pages">
         <ul>
-            <li><a href="#index">Frontpage</a></li>
-            <li><a href="#page2">Another page</a></li>
-            <li><a href="#page3">Third page</a></li>
+            <li><a href="#index">Startsidan</a></li>
+            <li><a href="#page2">Sport</a></li>
+            <li><a href="#page3">Nöje</a></li>
         </ul>
         <div id="index" class="page">
 
             <a href="#" class="item">
-                <h1>Testing item 1</h1>
-
-                <p>Summary for the first testing item.</p>
+                <img src="img1.jpg"/>
+                <p class="category">SKURUP</p>
+                <h1>Pendlandet är en fara för relationer</h1>
+                <p class="summary"><span class="dateline">RÅDGIVNING</span> Att vara en jobbpendlande förälder kan slita på relationerna till ens barn, det menar ungdomsrådgivare Drago Stenberg.</p>
             </a>
+            <a href="#" class="item">
+                <img src="img2.jpg"/>
+                <p class="category">SPORT</p>
+                <h1>Ökad säkerhet inför Skånederbyt</h1>
+                <p class="summary"><span class="dateline">FANS PORTADE</span> Senaste Skånederbyt bröts efter en stor publikskandal. När Helsingborg och Malmö möts på lördag igen är säkerheten rigorös.</p>
+            </a>
+
 
         </div>
         <div id="page2" class="page">
@@ -103,25 +149,23 @@
         </div>
     </div>
 
-    <div id="items" class="ui-widget">
-        <div class="ui-widget-header">Available items</div>
+    <div id="items">
+        <ul>
+            <li><a href="#items1">Artiklar</a></li>
+        </ul>
 
-        <a href="#" class="item">
-            <h1>Testing item 2</h1>
-
-            <p>Summary for the second testing item.</p>
-        </a>
-        <a href="#" class="item">
-            <h1>Testing item 3</h1>
-
-            <p>Summary for the third testing item.</p>
-        </a>
-        <a href="#" class="item">
-            <h1>Testing item 4</h1>
-
-            <p>Summary for the fourth testing item.</p>
-        </a>
-
+        <div id="items1" class="items">
+            <a href="#" class="item">
+                <p class="category">LUND</p>
+                <h1>Allergichock ledde till respiratorvård</h1>
+                <p class="summary"><span class="dateline">LUND</span> Felbehandling av en allergisk reaktion ledde till att den unga kvinnan hamnade i respirator, det menar kvinnans mamma.</p>
+            </a>
+            <a href="#" class="item">
+                <p class="category">LUND</p>
+                <h1>89-åring slogs blodig och rånades i sitt hem</h1>
+                <p class="summary"><span class="dateline">LUND</span> När den 89-årige Lundabon ville bli av med sina objudna gäster blev han slagen i ansiktet med en påse som innehöll en glasflaska och en ölburk.</p>
+            </a>
+        </div>
     </div>
 </div>
 </body>
