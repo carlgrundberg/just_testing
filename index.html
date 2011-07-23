@@ -133,9 +133,11 @@
             });
 
             edit = $('#edit');
+            current = null;
 
             $('.item').click(function() {
-                $("input[name=id]", edit).val($(this).attr('class').substring(5));
+                current = $(this);
+                $("input[name=id]", edit).val($(this).data("id"));
                 $("select[name=category]", edit).val($(".category",this).html());
                 $("input[name=title]", edit).val($(".title", this).html());
                 $("input[name=dateline]", edit).val($(".dateline", this).html());
@@ -144,15 +146,15 @@
             });
 
             $('#edit input, #edit textarea').keyup(function() {
-                item = '.' + $("input[name=id]", edit).val();
+//                item = '.[data-id=' + $("input[name=id]", edit).val() +"]";
                 field = '.' + $(this).attr('name');
-                $(item + " " + field).html($(this).val());
+                $(field, current).html($(this).val());
             });
 
             $('#edit select').change(function() {
-                item = '.' + $("input[name=id]", edit).val();
+//                item = '.[data-id=' + $("input[name=id]", edit).val() +"]";
                 field = '.' + $(this).attr('name');
-                $(item + " " + field).html($(this).val());
+                $(field, current).html($(this).val());
             });
 
             /*$('#items h1').click(function(e) {
@@ -175,14 +177,14 @@
         </ul>
         <div id="index" class="page">
 
-            <a href="#" class="item item1">
+            <a href="#" class="item" data-id="item1">
                 <img class="image" src="img1.jpg"/>
                 <span class="category">SKURUP</span>
                 <h1 class="title">Pendlandet är en fara för relationer</h1>
                 <span class="dateline">RÅDGIVNING</span>
                 <span class="summary">Att vara en jobbpendlande förälder kan slita på relationerna till ens barn, det menar ungdomsrådgivare Drago Stenberg.</span>
             </a>
-            <a href="#" class="item item2">
+            <a href="#" class="item" data-id="item2">
                 <img src="img2.jpg"/>
                 <span class="category">SPORT</span>
                 <h1 class="title">Ökad säkerhet inför Skånederbyt</h1>
@@ -206,13 +208,13 @@
         </ul>
 
         <div id="items1" class="items">
-            <a href="#" class="item item3">
+            <a href="#" class="item" data-id="item3">
                 <span class="category">LUND</span>
                 <h1 class="title">Allergichock ledde till respiratorvård</h1>
                 <span class="dateline">LUND</span>
                 <span class="summary">Felbehandling av en allergisk reaktion ledde till att den unga kvinnan hamnade i respirator, det menar kvinnans mamma.</span>
             </a>
-            <a href="#" class="item item4">
+            <a href="#" class="item" data-id="item4">
                 <span class="category">LUND</span>
                 <h1 class="title">89-åring slogs blodig och rånades i sitt hem</h1>
                 <span class="dateline">LUND</span>
