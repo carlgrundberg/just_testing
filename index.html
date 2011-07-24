@@ -24,12 +24,17 @@
 
         .page {
             width: 468px;
+            padding-bottom: 1em;
         }
 
         #items {
             float: left;
             width: 400px;
             margin-right: 50px;
+        }
+
+        .items {
+            padding-bottom: 1em;
         }
 
         #edit {
@@ -93,6 +98,17 @@
             border: 2px dashed #333;
         }
 
+        .placeholder {
+            display: block;
+            border: 2px dashed #333;
+            padding-bottom: 1em;
+            margin: -2px 0 -1px;
+        }
+
+        #items .placeholder {
+
+        }
+
         #props {
             margin: 0 2px;
         }
@@ -123,12 +139,12 @@
             $(".page").sortable({
                 connectWith: '#items .items',
                 forcePlaceholderSize: true,
-                placeholder: 'ui-state-highlight',
-                helper: 'clone'
+                placeholder: 'placeholder',
+                opacity: 0.35
             });
             $("#items .items").sortable({
                 forcePlaceholderSize: true,
-                placeholder: 'ui-state-highlight',
+                placeholder: 'placeholder',
                 connectWith: '.page'
             });
 
@@ -145,13 +161,13 @@
                 edit.show(edit);
             });
 
-            $('#edit input, #edit textarea').keyup(function() {
+            $('#edit input, #edit textarea').bind("keyup paste input", function() {
 //                item = '.[data-id=' + $("input[name=id]", edit).val() +"]";
                 field = '.' + $(this).attr('name');
                 $(field, current).html($(this).val());
             });
 
-            $('#edit select').change(function() {
+            $('#edit select').bind("change keyup", function() {
 //                item = '.[data-id=' + $("input[name=id]", edit).val() +"]";
                 field = '.' + $(this).attr('name');
                 $(field, current).html($(this).val());
@@ -253,7 +269,7 @@
                 </p>
 
                 <p>
-                    <input type="submit" value="Save"/>
+                    <input type="submit" value="Spara"/>
                 </p>
             </form>
         </div>
