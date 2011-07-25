@@ -70,7 +70,7 @@
             font-weight: bold;
         }
 
-        .page .item .category {
+        .page .item .category, .page .item .date {
             display: none;
         }
 
@@ -131,6 +131,11 @@
             margin: 0;
             padding: 0;
         }
+
+        .loading {
+            padding: 10px;
+            text-align: center;
+        }
     </style>
     <script>
         $(function() {
@@ -142,19 +147,17 @@
                 placeholder: 'placeholder',
                 opacity: 0.35
             });
-            $("#items .items").sortable({
-                forcePlaceholderSize: true,
-                placeholder: 'placeholder',
-                connectWith: '.page'
-            });
+
 
             edit = $('#edit');
             current = null;
 
-            $('.item').click(function() {
+            $('.item').live("click", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 current = $(this);
                 $("input[name=id]", edit).val($(this).data("id"));
-                $("select[name=category]", edit).val($(".category",this).html());
+                $("select[name=category]", edit).val($(".category", this).html());
                 $("input[name=title]", edit).val($(".title", this).html());
                 $("input[name=dateline]", edit).val($(".dateline", this).html());
                 $("textarea[name=summary]", edit).val($(".summary", this).html());
@@ -171,6 +174,23 @@
 //                item = '.[data-id=' + $("input[name=id]", edit).val() +"]";
                 field = '.' + $(this).attr('name');
                 $(field, current).html($(this).val());
+            });
+
+            $.getJSON('http://sfstage.redesign.publicus.com/section/skd/1057&template=json&mime=application/json&callback=?', function(data) {
+                $.each(data.items, function(i, item) {
+                    $('<a>').attr({
+                        href: unescape(item.link),
+                        class: 'item'
+                    }).data("id", item.id)
+                      .html((item.image ? '<img class="image" src="'+unescape(item.image)+'"/>' : '')+'<span class="date">'+unescape(item.date)+'</span> <span class="category">'+unescape(item.category)+'</span> <h1 class="title">'+unescape(item.title)+'</h1> <span class="dateline">'+unescape(item.dateline)+'</span> <span class="summary">'+unescape(item.summary)+'</span>')
+                      .appendTo('#items .items');
+                });
+                $("#items .items").sortable({
+                    forcePlaceholderSize: true,
+                    placeholder: 'placeholder',
+                    connectWith: '.page'
+                });
+                $('#items .loading').hide();
             });
 
             /*$('#items h1').click(function(e) {
@@ -192,23 +212,6 @@
             <li><a href="#page3">Nöje</a></li>
         </ul>
         <div id="index" class="page">
-
-            <a href="#" class="item" data-id="item1">
-                <img class="image" src="img1.jpg"/>
-                <span class="category">SKURUP</span>
-                <h1 class="title">Pendlandet är en fara för relationer</h1>
-                <span class="dateline">RÅDGIVNING</span>
-                <span class="summary">Att vara en jobbpendlande förälder kan slita på relationerna till ens barn, det menar ungdomsrådgivare Drago Stenberg.</span>
-            </a>
-            <a href="#" class="item" data-id="item2">
-                <img src="img2.jpg"/>
-                <span class="category">SPORT</span>
-                <h1 class="title">Ökad säkerhet inför Skånederbyt</h1>
-                <span class="dateline">FANS PORTADE</span>
-                <span class="summary">Senaste Skånederbyt bröts efter en stor publikskandal. När Helsingborg och Malmö möts på lördag igen är säkerheten rigorös.</span>
-            </a>
-
-
         </div>
         <div id="page2" class="page">
 
@@ -224,18 +227,10 @@
         </ul>
 
         <div id="items1" class="items">
-            <a href="#" class="item" data-id="item3">
-                <span class="category">LUND</span>
-                <h1 class="title">Allergichock ledde till respiratorvård</h1>
-                <span class="dateline">LUND</span>
-                <span class="summary">Felbehandling av en allergisk reaktion ledde till att den unga kvinnan hamnade i respirator, det menar kvinnans mamma.</span>
-            </a>
-            <a href="#" class="item" data-id="item4">
-                <span class="category">LUND</span>
-                <h1 class="title">89-åring slogs blodig och rånades i sitt hem</h1>
-                <span class="dateline">LUND</span>
-                <span class="summary">När den 89-årige Lundabon ville bli av med sina objudna gäster blev han slagen i ansiktet med en påse som innehöll en glasflaska och en ölburk.</span>
-            </a>
+            <div class="loading">
+                Hämtar artiklar<br/>
+                <img src="ajax-loader.gif"/>
+            </div>
         </div>
     </div>
 
