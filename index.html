@@ -29,7 +29,7 @@
 
         #items {
             float: left;
-            width: 400px;
+            width: 468px;
             margin-right: 50px;
         }
 
@@ -133,13 +133,57 @@
         }
 
         .loading {
+            position: absolute;
+            z-index: 1000;
             padding: 10px;
             text-align: center;
+            left: 50%;
+            top: 50%;
+            margin-left: -110px;
+            margin-top: -18px;
+            display: none;
         }
     </style>
     <script>
         $(function() {
-            $("#pages, #items, #edit").tabs();
+            edit = $('#edit');
+            current = null;
+            loading = $('.loading');
+
+            var createItem = function(item) {
+                return $('<a>').attr({
+                        href: unescape(item.link),
+                        class: 'item',
+                        "data-id": item.id
+                    }).html((item.image ? '<img class="image" src="'+unescape(item.image)+'"/>' : '')+'<span class="date">'+unescape(item.date)+'</span> <span class="category">'+unescape(item.category)+'</span> <h1 class="title">'+unescape(item.title)+'</h1> <span class="dateline">'+unescape(item.dateline)+'</span> <span class="summary">'+unescape(item.summary)+'</span>');
+            };
+
+            var loadContent = function(tab) {
+                source = tab.data("source");
+                if(source) {
+                    tab.empty();
+                    loading.show();
+                    $.getJSON(source+"&callback=?", function(data) {
+                        $.each(data.items, function(i, item) {
+                            if($('.page:visible .item[data-id='+item.id+']').length == 0) {
+                                createItem(item).appendTo(tab);
+                            }
+                        });
+                        loading.hide();
+                    });
+                }
+            };
+
+            $("#pages").tabs({
+                show: function(event, ui) {
+                    loadContent($(ui.panel));
+                    loadContent($('#items .items'));
+                }
+            });
+
+            $("#items").tabs();
+
+            $("#edit").tabs();
 
             $(".page").sortable({
                 connectWith: '#items .items',
@@ -148,9 +192,11 @@
                 opacity: 0.35
             });
 
-
-            edit = $('#edit');
-            current = null;
+            $("#items .items").sortable({
+                forcePlaceholderSize: true,
+                placeholder: 'placeholder',
+                connectWith: '.page'
+            });
 
             $('.item').live("click", function(e) {
                 e.preventDefault();
@@ -161,7 +207,7 @@
                 $("input[name=title]", edit).val($(".title", this).html());
                 $("input[name=dateline]", edit).val($(".dateline", this).html());
                 $("textarea[name=summary]", edit).val($(".summary", this).html());
-                edit.show(edit);
+                edit.show();
             });
 
             $('#edit input, #edit textarea').bind("keyup paste input", function() {
@@ -176,23 +222,6 @@
                 $(field, current).html($(this).val());
             });
 
-            $.getJSON('http://sfstage.redesign.publicus.com/section/skd/1057&template=json&mime=application/json&callback=?', function(data) {
-                $.each(data.items, function(i, item) {
-                    $('<a>').attr({
-                        href: unescape(item.link),
-                        class: 'item'
-                    }).data("id", item.id)
-                      .html((item.image ? '<img class="image" src="'+unescape(item.image)+'"/>' : '')+'<span class="date">'+unescape(item.date)+'</span> <span class="category">'+unescape(item.category)+'</span> <h1 class="title">'+unescape(item.title)+'</h1> <span class="dateline">'+unescape(item.dateline)+'</span> <span class="summary">'+unescape(item.summary)+'</span>')
-                      .appendTo('#items .items');
-                });
-                $("#items .items").sortable({
-                    forcePlaceholderSize: true,
-                    placeholder: 'placeholder',
-                    connectWith: '.page'
-                });
-                $('#items .loading').hide();
-            });
-
             /*$('#items h1').click(function(e) {
              if ($(this.parentNode).hasClass('ui-draggable-dragging')) {
              e.stopImmediatePropagation();
@@ -204,6 +233,10 @@
     </script>
 </head>
 <body>
+<div class="loading">
+    Hämtar artiklar<br/>
+    <img src="ajax-loader.gif"/>
+</div>
 <div id="content">
     <div id="pages">
         <ul>
@@ -211,13 +244,11 @@
             <li><a href="#page2">Sport</a></li>
             <li><a href="#page3">Nöje</a></li>
         </ul>
-        <div id="index" class="page">
+        <div id="index" class="page" data-source="http://sfstage.redesign.publicus.com/section/skd/1057&template=json&sort=prioonly&days=2&mime=text/javascript">
         </div>
-        <div id="page2" class="page">
-
+        <div id="page2" class="page" data-source="http://sfstage.redesign.publicus.com/section/skd/1001&template=json&&mime=text/javascript">
         </div>
-        <div id="page3" class="page">
-
+        <div id="page3" class="page" data-source="http://sfstage.redesign.publicus.com/section/skd/1002&template=json&&mime=text/javascript">
         </div>
     </div>
 
@@ -226,11 +257,7 @@
             <li><a href="#items1">Artiklar</a></li>
         </ul>
 
-        <div id="items1" class="items">
-            <div class="loading">
-                Hämtar artiklar<br/>
-                <img src="ajax-loader.gif"/>
-            </div>
+        <div id="items1" class="items" data-source="http://sfstage.redesign.publicus.com/section/skd/1162&sort=date&count=25&template=json&&mime=text/javascript">
         </div>
     </div>
 
